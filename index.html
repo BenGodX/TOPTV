@@ -4,8 +4,9 @@
   <meta charset="UTF-8">
   <title>TOPTV Playlist</title>
   <style>
-    body { font-family: sans-serif; padding: 2em; }
+    body { font-family: sans-serif; padding: 2em; white-space: pre-wrap; background: #f9f9f9; }
     .error { color: red; }
+    pre { background: #222; color: #0f0; padding: 1em; border-radius: 4px; overflow-x: auto; }
   </style>
 </head>
 <body>
@@ -15,7 +16,20 @@
     if (urlToken !== requiredToken) {
       document.body.innerHTML = '<h2 class="error">🔒 Access Denied</h2><p>You must provide a valid token.</p>';
     } else {
-      window.location.href = "./playlist.m3u";
+      // Fetch playlist.m3u 文件内容并显示
+      fetch('./playlist.m3u')
+        .then(response => {
+          if (!response.ok) throw new Error('Failed to load playlist.m3u');
+          return response.text();
+        })
+        .then(text => {
+          document.body.innerHTML = '<h1>TOPTV Playlist (M3U 内容)</h1><pre>' 
+            + text.replace(/</g, "&lt;").replace(/>/g, "&gt;") 
+            + '</pre>';
+        })
+        .catch(err => {
+          document.body.innerHTML = '<p class="error">加载播放列表失败：' + err.message + '</p>';
+        });
     }
   </script>
 </body>
