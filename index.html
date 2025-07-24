@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>TOPTV Playlist</title>
+  <style>
+    body { font-family: sans-serif; padding: 2em; }
+    .error { color: red; }
+  </style>
+</head>
+<body>
+  <script>
+    const requiredToken = "lzzz5201";
+    const urlToken = new URLSearchParams(window.location.search).get("token");
+    if (urlToken !== requiredToken) {
+      document.body.innerHTML = '<h2 class="error">🔒 Access Denied</h2><p>You must provide a valid token.</p>';
+    } else {
+      window.location.href = "./playlist.m3u";
+    }
+  </script>
+</body>
+</html>
